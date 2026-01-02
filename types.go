@@ -18,8 +18,8 @@ var (
 	// ErrImportFileDoesNotExist is returned when the import file does not exist
 	ErrImportFileDoesNotExist = errors.New("import file does not exist")
 
-	// headerIndexMap maps the header names to their index in the CSV file
-	headerIndexMap = map[string]int{
+	// headerIndexMapCall maps the header names to their index in the CSV file for calls
+	headerIndexMapCall = map[string]int{
 		"Call Type": 0,
 		"Date":      1,
 		"Duration":  2,
@@ -27,6 +27,25 @@ var (
 		"Contact":   4,
 		"Location":  5,
 		"Service":   6,
+	}
+
+	// headerIndexMapMessages maps the header names to their index in the CSV file for messages
+	headerIndexMapMessages = map[string]int{
+		"Chat Session":    0,
+		"Message Date":    1,
+		"Delivered Date":  2,
+		"Read Date":       3,
+		"Edited Date":     4,
+		"Service":         5,
+		"Type":            6,
+		"Sender ID":       7,
+		"Sender Name":     8,
+		"Status":          9,
+		"Replying to":     10,
+		"Subject":         11,
+		"Text":            12,
+		"Attachment":      13,
+		"Attachment type": 14,
 	}
 )
 
@@ -70,6 +89,28 @@ func (a *Application) AppendCalls(calls *sbrdata.Calls) error {
 	return collection.Save(a.collectionFile)
 }
 
+// AppendMessages adds the messages to the collection file
+func (a *Application) AppendMessages(messages *sbrdata.Messages) error {
+	var err error
+	collection := &sbrdata.Collection{
+		Key:   "",
+		Calls: make([]sbrdata.Call, 0),
+		Sms:   make([]sbrdata.SMS, 0),
+		Mms:   make([]sbrdata.MMS, 0),
+	}
+	if reuse.FileExists(a.collectionFile) {
+		collection, err = sbrdata.LoadCollection(a.collectionFile)
+		if err != nil {
+			return err
+		}
+	}
+	err = collection.AddMessages(messages)
+	if err != nil {
+		return err
+	}
+	return collection.Save(a.collectionFile)
+}
+
 type FileType uint
 
 const (
@@ -103,7 +144,7 @@ func (a *Application) Convert() (any, FileType, error) {
 		return nil, UnknownFile, err
 	}
 	for _, h := range header {
-		a.l.Debug("header", "header", h, "map", headerIndexMap[h])
+		a.l.Debug("header", "header", h, "map", headerIndexMapCall[h])
 	}
 
 	csvIn.ReuseRecord = true
@@ -112,7 +153,9 @@ func (a *Application) Convert() (any, FileType, error) {
 		// it is a call history file
 		return a.transformCallData(csvIn)
 	}
-	// TODO handle SMS/MMS
+	if header[0] == "Chat Session" {
+		return a.transformMessageData(csvIn)
+	}
 
 	return nil, UnknownFile, errors.New("unsupported file format")
 }
@@ -133,29 +176,29 @@ func (a *Application) transformCallData(csvIn *csv.Reader) (*sbrdata.Calls, File
 			return nil, CallHistoryFile, err
 		}
 		svc := ""
-		if strings.Contains(record[headerIndexMap["Service"]], ":") {
-			serviceData := strings.SplitN(record[headerIndexMap["Service"]], ":", 2)
+		if strings.Contains(record[headerIndexMapCall["Service"]], ":") {
+			serviceData := strings.SplitN(record[headerIndexMapCall["Service"]], ":", 2)
 			svc = serviceData[0]
 		} else {
-			svc = record[headerIndexMap["Service"]]
+			svc = record[headerIndexMapCall["Service"]]
 		}
 		date := ""
-		dt, err := time.Parse("2006-01-02 15:04:05", record[headerIndexMap["Date"]])
+		dt, err := time.Parse("2006-01-02 15:04:05", record[headerIndexMapCall["Date"]])
 		if err != nil {
 			return nil, CallHistoryFile, err
 		}
 		date = fmt.Sprintf("%d", dt.UnixMilli())
 		call := sbrdata.Call{
-			ContactName:  record[headerIndexMap["Contact"]],
+			ContactName:  record[headerIndexMapCall["Contact"]],
 			Date:         date,
-			ReadableDate: record[headerIndexMap["Date"]],
-			Presentation: record[headerIndexMap["Contact"]],
-			Duration:     record[headerIndexMap["Duration"]],
+			ReadableDate: record[headerIndexMapCall["Date"]],
+			Presentation: record[headerIndexMapCall["Contact"]],
+			Duration:     record[headerIndexMapCall["Duration"]],
 			DataFrom:     str2Ptr("iMazing"),
 			ServiceType:  str2Ptr(svc),
-			Number:       record[headerIndexMap["Number"]],
+			Number:       record[headerIndexMapCall["Number"]],
 		}
-		if record[headerIndexMap["Call Type"]] == callTypeOutgoing {
+		if record[headerIndexMapCall["Call Type"]] == callTypeOutgoing {
 			call.Type = "2"
 		} else {
 			call.Type = "1"
@@ -165,6 +208,42 @@ func (a *Application) transformCallData(csvIn *csv.Reader) (*sbrdata.Calls, File
 
 	callData.Count = fmt.Sprintf("%d", len(callData.Call))
 	return &callData, CallHistoryFile, nil
+}
+
+func (a *Application) transformMessageData(csvIn *csv.Reader) (any, FileType, error) {
+	messageData := &sbrdata.Messages{
+		Sms: make([]sbrdata.SMS, 0),
+		Mms: make([]sbrdata.MMS, 0),
+	}
+
+	for {
+		record, err := csvIn.Read()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			return nil, CallHistoryFile, err
+		}
+		sms := sbrdata.SMS{}
+		if record[headerIndexMapMessages["Type"]] == callTypeOutgoing {
+			sms.Type = "2"
+		} else {
+			sms.Type = "1"
+		}
+		sms.ContactName = record[headerIndexMapMessages["Sender Name"]]
+		if sms.ContactName == "" {
+			sms.ContactName = record[headerIndexMapMessages["Chat Session"]]
+		}
+		sms.Subject = record[headerIndexMapMessages["Subject"]]
+		sms.Body = record[headerIndexMapMessages["Text"]]
+		sms.ReadableDate = record[headerIndexMapMessages["Message Date"]]
+		sms.Date = record[headerIndexMapMessages["Message Date"]]
+		sms.Address = record[headerIndexMapMessages["Sender ID"]]
+		sms.Status = record[headerIndexMapMessages["Status"]]
+		messageData.Sms = append(messageData.Sms, sms)
+	}
+
+	return messageData, MessageHistoryFile, nil
 }
 
 // str2Ptr converts a string to a pointer

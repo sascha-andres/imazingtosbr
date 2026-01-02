@@ -89,6 +89,12 @@ func run(logger *slog.Logger, _ []string) error {
 		}
 		return a.AppendCalls(callData)
 	}
-	// TODO handle SMS/MMS
+	if fileType == imazingtosbr.MessageHistoryFile {
+		messageData := sbrData.(*sbrdata.Messages)
+		for _, sms := range messageData.GetSms() {
+			logger.Debug("sms found", "sms", sms)
+		}
+		return a.AppendMessages(messageData)
+	}
 	return errors.New("unsupported file type")
 }
