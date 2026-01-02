@@ -104,6 +104,6 @@ go.work.sum
 # env file
 .env
 
-testdata/*
+mydata/*
 iphone2sbr
 dist/
