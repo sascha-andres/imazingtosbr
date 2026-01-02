@@ -16,10 +16,10 @@ iphone2sbr [options]
   - `1` = info
   - `2` = debug
 
-- `-import-file` (string, default: "testdata/Call History - 2025-12-07 07 00 00.csv")
+- `-import-file` (string, default: "")
   Path to the CSV file to import (iMazing call history export)
 
-- `-collection-file` (string, default: "testdata/calls.json")
+- `-collection-file` (string, default: "")
   Path to the collection file to append converted calls to
 
 - `-tag` (string, default: "")
