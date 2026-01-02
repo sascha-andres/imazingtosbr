@@ -48,8 +48,8 @@ type Application struct {
 	tag string
 }
 
-// Append adds the calls to the collection file
-func (a *Application) Append(calls *sbrdata.Calls) error {
+// AppendCalls adds the calls to the collection file
+func (a *Application) AppendCalls(calls *sbrdata.Calls) error {
 	var err error
 	collection := &sbrdata.Collection{
 		Key:   "",
@@ -67,19 +67,26 @@ func (a *Application) Append(calls *sbrdata.Calls) error {
 	if err != nil {
 		return err
 	}
-	collection.SetVerbose()
 	return collection.Save(a.collectionFile)
 }
 
+type FileType uint
+
+const (
+	UnknownFile FileType = iota
+	CallHistoryFile
+	MessageHistoryFile
+)
+
 // Convert converts the CSV file to SBR data
-func (a Application) Convert() (*sbrdata.Calls, error) {
+func (a *Application) Convert() (any, FileType, error) {
 	start := time.Now()
 	a.l.Debug("converting file", "file", a.fileToImport)
 	defer a.l.Debug("conversion finished", "duration_ms", time.Since(start).Milliseconds())
 
 	file, err := os.Open(a.fileToImport)
 	if err != nil {
-		return nil, err
+		return nil, UnknownFile, err
 	}
 	defer func() {
 		err := file.Close()
@@ -93,13 +100,25 @@ func (a Application) Convert() (*sbrdata.Calls, error) {
 	// print header in debug mode in case anything changes
 	header, err := csvIn.Read()
 	if err != nil {
-		return nil, err
+		return nil, UnknownFile, err
 	}
 	for _, h := range header {
 		a.l.Debug("header", "header", h, "map", headerIndexMap[h])
 	}
+
 	csvIn.ReuseRecord = true
 
+	if header[0] == "Call type" {
+		// it is a call history file
+		return a.transformCallData(csvIn)
+	}
+	// TODO handle SMS/MMS
+
+	return nil, UnknownFile, errors.New("unsupported file format")
+}
+
+// transformCallData reads call data from a CSV reader and transforms it into an sbrdata.Calls structure.
+func (a *Application) transformCallData(csvIn *csv.Reader) (*sbrdata.Calls, FileType, error) {
 	callData := sbrdata.Calls{
 		Call:  make([]sbrdata.Call, 0),
 		Count: "0",
@@ -111,7 +130,7 @@ func (a Application) Convert() (*sbrdata.Calls, error) {
 			break
 		}
 		if err != nil {
-			return nil, err
+			return nil, CallHistoryFile, err
 		}
 		svc := ""
 		if strings.Contains(record[headerIndexMap["Service"]], ":") {
@@ -123,7 +142,7 @@ func (a Application) Convert() (*sbrdata.Calls, error) {
 		date := ""
 		dt, err := time.Parse("2006-01-02 15:04:05", record[headerIndexMap["Date"]])
 		if err != nil {
-			return nil, err
+			return nil, CallHistoryFile, err
 		}
 		date = fmt.Sprintf("%d", dt.UnixMilli())
 		call := sbrdata.Call{
@@ -145,7 +164,7 @@ func (a Application) Convert() (*sbrdata.Calls, error) {
 	}
 
 	callData.Count = fmt.Sprintf("%d", len(callData.Call))
-	return &callData, nil
+	return &callData, CallHistoryFile, nil
 }
 
 // str2Ptr converts a string to a pointer
