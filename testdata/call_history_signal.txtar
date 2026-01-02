@@ -1,0 +1,12 @@
+# Test case for call history with Signal audio calls (UUID-based identifiers)
+# Tests handling of non-traditional phone numbers (UUIDs)
+
+-- input.csv --
+Call type,Date,Duration,Number,Contact,Location,Service
+Outgoing,2024-04-10 09:30:00,00:03:45,AB123456-7890-ABCD-EF12-34567890ABCD,Emma Davis,,Signal Audio
+Incoming,2024-04-10 10:15:22,00:02:10,CD789012-3456-BCDE-FA23-4567890BCDEF,Michael Brown,,Signal Audio
+
+-- options.txt --
+file_type=call_history
+expected_count=2
+expected_service=Signal

@@ -1,0 +1,9 @@
+# Test case for empty message history (header only)
+# Tests handling of valid CSV with no data rows
+
+-- input.csv --
+Chat Session,Message Date,Delivered Date,Read Date,Edited Date,Service,Type,Sender ID,Sender Name,Status,Replying to,Subject,Text,Attachment,Attachment type
+
+-- options.txt --
+file_type=messages
+expected_sms_count=0

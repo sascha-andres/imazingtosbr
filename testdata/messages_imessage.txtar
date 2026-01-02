@@ -1,0 +1,16 @@
+# Test case for iMessage conversation
+# Tests iMessage import with both incoming and outgoing messages
+
+-- input.csv --
+Chat Session,Message Date,Delivered Date,Read Date,Edited Date,Service,Type,Sender ID,Sender Name,Status,Replying to,Subject,Text,Attachment,Attachment type
+Sarah Connor,2024-07-10 15:20:00,,2024-07-10 15:21:00,,iMessage,Incoming,+1555123456,Sarah Connor,Read,,,Hey! How are you doing?,,
+Sarah Connor,2024-07-10 15:22:30,2024-07-10 15:22:35,2024-07-10 15:23:00,,iMessage,Outgoing,,,Read,,,"I'm doing great, thanks for asking!",,
+Sarah Connor,2024-07-10 15:25:00,,2024-07-10 15:26:00,,iMessage,Incoming,+1555123456,Sarah Connor,Read,,,Want to grab coffee tomorrow?,,
+Sarah Connor,2024-07-10 15:27:00,2024-07-10 15:27:05,2024-07-10 15:28:00,,iMessage,Outgoing,,,Read,,,Sure! How about 3pm?,,
+Sarah Connor,2024-07-10 15:28:30,,2024-07-10 15:29:00,,iMessage,Incoming,+1555123456,Sarah Connor,Read,,,Perfect! See you then.,,
+
+-- options.txt --
+file_type=messages
+expected_sms_count=5
+expected_service=iMessage
+sender_name=Sarah Connor

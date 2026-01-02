@@ -1,0 +1,14 @@
+# Test case for basic call history conversion with mixed incoming/outgoing calls
+# This tests the conversion of a standard iMazing call history CSV export
+
+-- input.csv --
+Call type,Date,Duration,Number,Contact,Location,Service
+Outgoing,2024-03-15 14:30:00,00:02:45,+1234567890,John Doe,United States,Phone: +1234567890
+Incoming,2024-03-15 15:45:30,00:01:20,+9876543210,Jane Smith,United Kingdom,Phone: +9876543210
+Outgoing,2024-03-15 16:20:15,00:00:00,+1122334455,Bob Johnson,Canada,WhatsApp Video
+Incoming,2024-03-15 17:00:00,00:05:15,+5544332211,Alice Williams,Germany,Phone: +5544332211
+
+-- options.txt --
+file_type=call_history
+expected_count=4
+expected_types=2,1,2,1

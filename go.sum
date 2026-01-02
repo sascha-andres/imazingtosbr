@@ -6,3 +6,5 @@ github.com/sascha-andres/sbrdata/v2 v2.1.2 h1:zXk/k61ZLPmeXpqmMR1S80xW1jVf2a0ZyV
 github.com/sascha-andres/sbrdata/v2 v2.1.2/go.mod h1:2TsxoaI3KW2h1CiG9twg9PMmTUbNAwWQNeX7N18e2aU=
 golang.org/x/exp v0.0.0-20251219203646-944ab1f22d93 h1:fQsdNF2N+/YewlRZiricy4P1iimyPKZ/xwniHj8Q2a0=
 golang.org/x/exp v0.0.0-20251219203646-944ab1f22d93/go.mod h1:EPRbTFwzwjXj9NpYyyrvenVh9Y+GFeEvMNh7Xuz7xgU=
+golang.org/x/tools v0.40.0 h1:yLkxfA+Qnul4cs9QA3KnlFu0lVmd8JJfoq+E41uSutA=
+golang.org/x/tools v0.40.0/go.mod h1:Ik/tzLRlbscWpqqMRjyWYDisX8bG13FrdXp3o4Sr9lc=

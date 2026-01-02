@@ -1,0 +1,9 @@
+# Test case for empty call history (header only)
+# Tests handling of valid CSV with no data rows
+
+-- input.csv --
+Call type,Date,Duration,Number,Contact,Location,Service
+
+-- options.txt --
+file_type=call_history
+expected_count=0

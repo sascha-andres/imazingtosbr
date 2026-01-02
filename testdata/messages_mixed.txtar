@@ -1,0 +1,14 @@
+# Test case for mixed message types (SMS and iMessage)
+# Tests handling of different message services in one file
+
+-- input.csv --
+Chat Session,Message Date,Delivered Date,Read Date,Edited Date,Service,Type,Sender ID,Sender Name,Status,Replying to,Subject,Text,Attachment,Attachment type
+Notification,2024-08-15 08:00:00,,2024-08-15 08:01:00,,SMS,Incoming,Notification,,Read,,,Your package has been delivered.,,
++1555987654,2024-08-15 09:30:00,2024-08-15 09:30:05,2024-08-15 09:31:00,,iMessage,Outgoing,,,Read,,,Morning! Got your package?,,
++1555987654,2024-08-15 09:35:00,,2024-08-15 09:36:00,,iMessage,Incoming,+1555987654,Tom Wilson,Read,,,Yes! Just opened it. Thanks!,,
+Alert,2024-08-15 10:00:00,,2024-08-15 10:02:00,,SMS,Incoming,Alert,,Read,,,Reminder: Meeting at 2pm today.,,
+
+-- options.txt --
+file_type=messages
+expected_sms_count=4
+mixed_services=true
