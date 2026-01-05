@@ -15,4 +15,100 @@ Sarah Connor,2024-07-10 15:28:30,,2024-07-10 15:29:00,,iMessage,Incoming,+155512
 }
 
 -- result.json --
-{}
+{
+  "Key": "",
+  "Calls": [],
+  "Sms": [
+    {
+      "Protocol": "",
+      "Address": "+1555123456",
+      "Date": "1720624800000",
+      "Type": "1",
+      "Subject": "",
+      "Body": "Hey! How are you doing?",
+      "Toa": "",
+      "ScToa": "",
+      "ServiceCenter": "",
+      "Read": "",
+      "Status": "Read",
+      "Locked": "",
+      "DateSent": "",
+      "SubID": "",
+      "ReadableDate": "2024-07-10 15:20:00",
+      "ContactName": "Sarah Connor"
+    },
+    {
+      "Protocol": "",
+      "Address": "",
+      "Date": "1720624950000",
+      "Type": "2",
+      "Subject": "",
+      "Body": "I'm doing great, thanks for asking!",
+      "Toa": "",
+      "ScToa": "",
+      "ServiceCenter": "",
+      "Read": "",
+      "Status": "Read",
+      "Locked": "",
+      "DateSent": "",
+      "SubID": "",
+      "ReadableDate": "2024-07-10 15:22:30",
+      "ContactName": "Sarah Connor"
+    },
+    {
+      "Protocol": "",
+      "Address": "+1555123456",
+      "Date": "1720625100000",
+      "Type": "1",
+      "Subject": "",
+      "Body": "Want to grab coffee tomorrow?",
+      "Toa": "",
+      "ScToa": "",
+      "ServiceCenter": "",
+      "Read": "",
+      "Status": "Read",
+      "Locked": "",
+      "DateSent": "",
+      "SubID": "",
+      "ReadableDate": "2024-07-10 15:25:00",
+      "ContactName": "Sarah Connor"
+    },
+    {
+      "Protocol": "",
+      "Address": "",
+      "Date": "1720625220000",
+      "Type": "2",
+      "Subject": "",
+      "Body": "Sure! How about 3pm?",
+      "Toa": "",
+      "ScToa": "",
+      "ServiceCenter": "",
+      "Read": "",
+      "Status": "Read",
+      "Locked": "",
+      "DateSent": "",
+      "SubID": "",
+      "ReadableDate": "2024-07-10 15:27:00",
+      "ContactName": "Sarah Connor"
+    },
+    {
+      "Protocol": "",
+      "Address": "+1555123456",
+      "Date": "1720625310000",
+      "Type": "1",
+      "Subject": "",
+      "Body": "Perfect! See you then.",
+      "Toa": "",
+      "ScToa": "",
+      "ServiceCenter": "",
+      "Read": "",
+      "Status": "Read",
+      "Locked": "",
+      "DateSent": "",
+      "SubID": "",
+      "ReadableDate": "2024-07-10 15:28:30",
+      "ContactName": "Sarah Connor"
+    }
+  ],
+  "Mms": []
+}

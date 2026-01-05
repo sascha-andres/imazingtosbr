@@ -14,4 +14,82 @@ Alert,2024-08-15 10:00:00,,2024-08-15 10:02:00,,SMS,Incoming,Alert,,Read,,,Remin
 }
 
 -- result.json --
-{}
+{
+  "Key": "",
+  "Calls": [],
+  "Sms": [
+    {
+      "Protocol": "",
+      "Address": "Notification",
+      "Date": "1723708800000",
+      "Type": "1",
+      "Subject": "",
+      "Body": "Your package has been delivered.",
+      "Toa": "",
+      "ScToa": "",
+      "ServiceCenter": "",
+      "Read": "",
+      "Status": "Read",
+      "Locked": "",
+      "DateSent": "",
+      "SubID": "",
+      "ReadableDate": "2024-08-15 08:00:00",
+      "ContactName": "Notification"
+    },
+    {
+      "Protocol": "",
+      "Address": "",
+      "Date": "1723714200000",
+      "Type": "2",
+      "Subject": "",
+      "Body": "Morning! Got your package?",
+      "Toa": "",
+      "ScToa": "",
+      "ServiceCenter": "",
+      "Read": "",
+      "Status": "Read",
+      "Locked": "",
+      "DateSent": "",
+      "SubID": "",
+      "ReadableDate": "2024-08-15 09:30:00",
+      "ContactName": "+1555987654"
+    },
+    {
+      "Protocol": "",
+      "Address": "+1555987654",
+      "Date": "1723714500000",
+      "Type": "1",
+      "Subject": "",
+      "Body": "Yes! Just opened it. Thanks!",
+      "Toa": "",
+      "ScToa": "",
+      "ServiceCenter": "",
+      "Read": "",
+      "Status": "Read",
+      "Locked": "",
+      "DateSent": "",
+      "SubID": "",
+      "ReadableDate": "2024-08-15 09:35:00",
+      "ContactName": "Tom Wilson"
+    },
+    {
+      "Protocol": "",
+      "Address": "Alert",
+      "Date": "1723716000000",
+      "Type": "1",
+      "Subject": "",
+      "Body": "Reminder: Meeting at 2pm today.",
+      "Toa": "",
+      "ScToa": "",
+      "ServiceCenter": "",
+      "Read": "",
+      "Status": "Read",
+      "Locked": "",
+      "DateSent": "",
+      "SubID": "",
+      "ReadableDate": "2024-08-15 10:00:00",
+      "ContactName": "Alert"
+    }
+  ],
+  "Mms": []
+}

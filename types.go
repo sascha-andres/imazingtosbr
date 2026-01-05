@@ -234,10 +234,16 @@ func (a *Application) transformMessageData(csvIn *csv.Reader) (any, FileType, er
 		if sms.ContactName == "" {
 			sms.ContactName = record[headerIndexMapMessages["Chat Session"]]
 		}
+		date := ""
+		dt, err := time.Parse("2006-01-02 15:04:05", record[headerIndexMapMessages["Message Date"]])
+		if err != nil {
+			return nil, CallHistoryFile, err
+		}
+		date = fmt.Sprintf("%d", dt.UnixMilli())
 		sms.Subject = record[headerIndexMapMessages["Subject"]]
 		sms.Body = record[headerIndexMapMessages["Text"]]
 		sms.ReadableDate = record[headerIndexMapMessages["Message Date"]]
-		sms.Date = record[headerIndexMapMessages["Message Date"]]
+		sms.Date = date
 		sms.Address = record[headerIndexMapMessages["Sender ID"]]
 		sms.Status = record[headerIndexMapMessages["Status"]]
 		messageData.Sms = append(messageData.Sms, sms)

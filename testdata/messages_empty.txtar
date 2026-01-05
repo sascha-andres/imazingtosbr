@@ -10,4 +10,9 @@ Chat Session,Message Date,Delivered Date,Read Date,Edited Date,Service,Type,Send
 }
 
 -- result.json --
-{}
+{
+  "Key": "",
+  "Calls": [],
+  "Sms": [],
+  "Mms": []
+}

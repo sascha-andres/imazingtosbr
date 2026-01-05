@@ -13,4 +13,64 @@ Bank,2024-06-02 09:30:00,,2024-06-02 09:35:00,,SMS,Incoming,Bank,,Read,,,Your ac
 }
 
 -- result.json --
-{}
+{
+  "Key": "",
+  "Calls": [],
+  "Sms": [
+    {
+      "Protocol": "",
+      "Address": "Alert",
+      "Date": "1717236000000",
+      "Type": "1",
+      "Subject": "",
+      "Body": "Your verification code is 123456. Do not share this code.",
+      "Toa": "",
+      "ScToa": "",
+      "ServiceCenter": "",
+      "Read": "",
+      "Status": "Read",
+      "Locked": "",
+      "DateSent": "",
+      "SubID": "",
+      "ReadableDate": "2024-06-01 10:00:00",
+      "ContactName": "Alert"
+    },
+    {
+      "Protocol": "",
+      "Address": "Bank",
+      "Date": "1717320600000",
+      "Type": "1",
+      "Subject": "",
+      "Body": "Your account balance is $1234.56",
+      "Toa": "",
+      "ScToa": "",
+      "ServiceCenter": "",
+      "Read": "",
+      "Status": "Read",
+      "Locked": "",
+      "DateSent": "",
+      "SubID": "",
+      "ReadableDate": "2024-06-02 09:30:00",
+      "ContactName": "Bank"
+    },
+    {
+      "Protocol": "",
+      "Address": "",
+      "Date": "1717424100000",
+      "Type": "2",
+      "Subject": "",
+      "Body": "Thanks for the update!",
+      "Toa": "",
+      "ScToa": "",
+      "ServiceCenter": "",
+      "Read": "",
+      "Status": "Sent",
+      "Locked": "",
+      "DateSent": "",
+      "SubID": "",
+      "ReadableDate": "2024-06-03 14:15:00",
+      "ContactName": "+1234567890"
+    }
+  ],
+  "Mms": []
+}
