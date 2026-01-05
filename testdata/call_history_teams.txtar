@@ -7,7 +7,10 @@ Outgoing,2024-05-20 09:00:00,00:30:00,Daily Standup,Daily Standup,,Teams Audio
 Incoming,2024-05-20 14:00:00,00:45:30,Project Review,Project Review,,Teams Audio
 Outgoing,2024-05-20 16:30:00,00:15:00,Team Sync,Team Sync,,Teams Audio
 
--- options.txt --
-file_type=call_history
-expected_count=3
-expected_service=Teams
+-- options.json --
+{
+    "file_type": "call_history"
+}
+
+-- result.json --
+{}

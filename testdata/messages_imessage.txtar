@@ -9,8 +9,10 @@ Sarah Connor,2024-07-10 15:25:00,,2024-07-10 15:26:00,,iMessage,Incoming,+155512
 Sarah Connor,2024-07-10 15:27:00,2024-07-10 15:27:05,2024-07-10 15:28:00,,iMessage,Outgoing,,,Read,,,Sure! How about 3pm?,,
 Sarah Connor,2024-07-10 15:28:30,,2024-07-10 15:29:00,,iMessage,Incoming,+1555123456,Sarah Connor,Read,,,Perfect! See you then.,,
 
--- options.txt --
-file_type=messages
-expected_sms_count=5
-expected_service=iMessage
-sender_name=Sarah Connor
+-- parameters.json --
+{
+    "file_type": "messages"
+}
+
+-- result.json --
+{}

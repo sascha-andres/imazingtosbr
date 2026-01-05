@@ -1,16 +1,23 @@
 package imazingtosbr
 
 import (
+	"encoding/json"
 	"fmt"
 	"log/slog"
 	"os"
+	"path"
 	"path/filepath"
 	"strings"
 	"testing"
 
+	"github.com/google/go-cmp/cmp"
 	"github.com/sascha-andres/sbrdata/v2"
 	"golang.org/x/tools/txtar"
 )
+
+type Parameters struct {
+	FileType string `json:"file_type"`
+}
 
 // TestConvert tests the Convert function using txtar test cases
 func TestConvert(t *testing.T) {
@@ -33,13 +40,19 @@ func TestConvert(t *testing.T) {
 
 			// Extract input CSV and options
 			var inputCSV []byte
-			var options map[string]string
+			var parameters Parameters
+			var expected string
 			for _, file := range archive.Files {
 				switch file.Name {
 				case "input.csv":
 					inputCSV = file.Data
-				case "options.txt":
-					options = parseOptions(file.Data)
+				case "parameters.json":
+					err := json.Unmarshal(file.Data, &parameters)
+					if err != nil {
+						t.Fatalf("failed to unmarshal parameters.json: %v", err)
+					}
+				case "result.json":
+					expected = strings.TrimSpace(string(file.Data))
 				}
 			}
 
@@ -70,8 +83,15 @@ func TestConvert(t *testing.T) {
 				t.Fatalf("Convert() error = %v", err)
 			}
 
+			collection := sbrdata.Collection{
+				Key:   "",
+				Calls: make([]sbrdata.Call, 0),
+				Sms:   make([]sbrdata.SMS, 0),
+				Mms:   make([]sbrdata.MMS, 0),
+			}
+
 			// Verify file type
-			expectedFileType := options["file_type"]
+			expectedFileType := parameters.FileType
 			switch expectedFileType {
 			case "call_history":
 				if fileType != CallHistoryFile {
@@ -82,7 +102,9 @@ func TestConvert(t *testing.T) {
 				if !ok {
 					t.Fatalf("expected *sbrdata.Calls, got %T", result)
 				}
-				verifyCallData(t, callData, options)
+				if err := collection.AddCalls(callData); err != nil {
+					t.Fatalf("failed to add calls to collection: %v", err)
+				}
 			case "messages":
 				if fileType != MessageHistoryFile {
 					t.Errorf("expected MessageHistoryFile, got %v", fileType)
@@ -92,9 +114,20 @@ func TestConvert(t *testing.T) {
 				if !ok {
 					t.Fatalf("expected *sbrdata.Messages, got %T", result)
 				}
-				verifyMessageData(t, messageData, options)
+				if err := collection.AddMessages(messageData); err != nil {
+					t.Fatalf("failed to add messages to collection: %v", err)
+				}
 			default:
 				t.Errorf("unknown file_type in options: %s", expectedFileType)
+			}
+
+			data, err := json.MarshalIndent(collection, "", "  ")
+			if err != nil {
+				t.Fatalf("failed to marshal collection: %v", err)
+			}
+			if diff := cmp.Diff(strings.TrimSpace(string(data)), expected, nil); diff != "" {
+				_ = os.WriteFile(path.Join("testdata", filepath.Base(testFile)+".result.json"), data, 0644)
+				t.Errorf("unexpected result. diff: \n\n%s", diff)
 			}
 		})
 	}

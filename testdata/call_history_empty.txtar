@@ -7,3 +7,16 @@ Call type,Date,Duration,Number,Contact,Location,Service
 -- options.txt --
 file_type=call_history
 expected_count=0
+
+-- parameters.json --
+{
+    "file_type": "call_history"
+}
+
+-- result.json --
+{
+  "Key": "",
+  "Calls": [],
+  "Sms": [],
+  "Mms": []
+}

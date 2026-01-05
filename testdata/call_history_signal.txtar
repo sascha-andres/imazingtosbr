@@ -6,7 +6,44 @@ Call type,Date,Duration,Number,Contact,Location,Service
 Outgoing,2024-04-10 09:30:00,00:03:45,AB123456-7890-ABCD-EF12-34567890ABCD,Emma Davis,,Signal Audio
 Incoming,2024-04-10 10:15:22,00:02:10,CD789012-3456-BCDE-FA23-4567890BCDEF,Michael Brown,,Signal Audio
 
--- options.txt --
-file_type=call_history
-expected_count=2
-expected_service=Signal
+-- parameters.json --
+{
+    "file_type": "call_history"
+}
+
+-- result.json --
+{
+  "Key": "",
+  "Calls": [
+    {
+      "Number": "AB123456-7890-ABCD-EF12-34567890ABCD",
+      "Duration": "00:03:45",
+      "Date": "1712741400000",
+      "Type": "2",
+      "Presentation": "Emma Davis",
+      "SubscriptionID": "",
+      "PostDialDigits": "",
+      "SubscriptionComponentName": "",
+      "ReadableDate": "2024-04-10 09:30:00",
+      "ContactName": "Emma Davis",
+      "ServiceType": "Signal Audio",
+      "DataFrom": "iMazing"
+    },
+    {
+      "Number": "CD789012-3456-BCDE-FA23-4567890BCDEF",
+      "Duration": "00:02:10",
+      "Date": "1712744122000",
+      "Type": "1",
+      "Presentation": "Michael Brown",
+      "SubscriptionID": "",
+      "PostDialDigits": "",
+      "SubscriptionComponentName": "",
+      "ReadableDate": "2024-04-10 10:15:22",
+      "ContactName": "Michael Brown",
+      "ServiceType": "Signal Audio",
+      "DataFrom": "iMazing"
+    }
+  ],
+  "Sms": [],
+  "Mms": []
+}

@@ -4,6 +4,10 @@
 -- input.csv --
 Chat Session,Message Date,Delivered Date,Read Date,Edited Date,Service,Type,Sender ID,Sender Name,Status,Replying to,Subject,Text,Attachment,Attachment type
 
--- options.txt --
-file_type=messages
-expected_sms_count=0
+-- parameters.json --
+{
+    "file_type": "messages"
+}
+
+-- result.json --
+{}

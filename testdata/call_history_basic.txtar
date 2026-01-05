@@ -8,7 +8,72 @@ Incoming,2024-03-15 15:45:30,00:01:20,+9876543210,Jane Smith,United Kingdom,Phon
 Outgoing,2024-03-15 16:20:15,00:00:00,+1122334455,Bob Johnson,Canada,WhatsApp Video
 Incoming,2024-03-15 17:00:00,00:05:15,+5544332211,Alice Williams,Germany,Phone: +5544332211
 
--- options.txt --
-file_type=call_history
-expected_count=4
-expected_types=2,1,2,1
+-- parameters.json --
+{
+    "file_type": "call_history"
+}
+
+-- result.json --
+{
+  "Key": "",
+  "Calls": [
+    {
+      "Number": "+1234567890",
+      "Duration": "00:02:45",
+      "Date": "1710513000000",
+      "Type": "2",
+      "Presentation": "John Doe",
+      "SubscriptionID": "",
+      "PostDialDigits": "",
+      "SubscriptionComponentName": "",
+      "ReadableDate": "2024-03-15 14:30:00",
+      "ContactName": "John Doe",
+      "ServiceType": "Phone",
+      "DataFrom": "iMazing"
+    },
+    {
+      "Number": "+9876543210",
+      "Duration": "00:01:20",
+      "Date": "1710517530000",
+      "Type": "1",
+      "Presentation": "Jane Smith",
+      "SubscriptionID": "",
+      "PostDialDigits": "",
+      "SubscriptionComponentName": "",
+      "ReadableDate": "2024-03-15 15:45:30",
+      "ContactName": "Jane Smith",
+      "ServiceType": "Phone",
+      "DataFrom": "iMazing"
+    },
+    {
+      "Number": "+1122334455",
+      "Duration": "00:00:00",
+      "Date": "1710519615000",
+      "Type": "2",
+      "Presentation": "Bob Johnson",
+      "SubscriptionID": "",
+      "PostDialDigits": "",
+      "SubscriptionComponentName": "",
+      "ReadableDate": "2024-03-15 16:20:15",
+      "ContactName": "Bob Johnson",
+      "ServiceType": "WhatsApp Video",
+      "DataFrom": "iMazing"
+    },
+    {
+      "Number": "+5544332211",
+      "Duration": "00:05:15",
+      "Date": "1710522000000",
+      "Type": "1",
+      "Presentation": "Alice Williams",
+      "SubscriptionID": "",
+      "PostDialDigits": "",
+      "SubscriptionComponentName": "",
+      "ReadableDate": "2024-03-15 17:00:00",
+      "ContactName": "Alice Williams",
+      "ServiceType": "Phone",
+      "DataFrom": "iMazing"
+    }
+  ],
+  "Sms": [],
+  "Mms": []
+}

@@ -107,3 +107,4 @@ go.work.sum
 mydata/*
 iphone2sbr
 dist/
+testdata/*.result.json

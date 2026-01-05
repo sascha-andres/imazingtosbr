@@ -7,7 +7,10 @@ Alert,2024-06-01 10:00:00,,2024-06-01 10:05:00,,SMS,Incoming,Alert,,Read,,,Your 
 Bank,2024-06-02 09:30:00,,2024-06-02 09:35:00,,SMS,Incoming,Bank,,Read,,,Your account balance is $1234.56,,
 +1234567890,2024-06-03 14:15:00,2024-06-03 14:15:05,,,SMS,Outgoing,,,Sent,,,Thanks for the update!,,
 
--- options.txt --
-file_type=messages
-expected_sms_count=3
-expected_types=1,1,2
+-- parameters.json --
+{
+    "file_type": "messages"
+}
+
+-- result.json --
+{}
