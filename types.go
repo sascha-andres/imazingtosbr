@@ -3,11 +3,8 @@ package imazingtosbr
 import (
 	"encoding/csv"
 	"errors"
-	"fmt"
-	"io"
 	"log/slog"
 	"os"
-	"strings"
 	"time"
 
 	"github.com/sascha-andres/reuse"
@@ -158,98 +155,6 @@ func (a *Application) Convert() (any, FileType, error) {
 	}
 
 	return nil, UnknownFile, errors.New("unsupported file format")
-}
-
-// transformCallData reads call data from a CSV reader and transforms it into an sbrdata.Calls structure.
-func (a *Application) transformCallData(csvIn *csv.Reader) (*sbrdata.Calls, FileType, error) {
-	callData := sbrdata.Calls{
-		Call:  make([]sbrdata.Call, 0),
-		Count: "0",
-	}
-
-	for {
-		record, err := csvIn.Read()
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			return nil, CallHistoryFile, err
-		}
-		svc := ""
-		if strings.Contains(record[headerIndexMapCall["Service"]], ":") {
-			serviceData := strings.SplitN(record[headerIndexMapCall["Service"]], ":", 2)
-			svc = serviceData[0]
-		} else {
-			svc = record[headerIndexMapCall["Service"]]
-		}
-		date := ""
-		dt, err := time.Parse("2006-01-02 15:04:05", record[headerIndexMapCall["Date"]])
-		if err != nil {
-			return nil, CallHistoryFile, err
-		}
-		date = fmt.Sprintf("%d", dt.UnixMilli())
-		call := sbrdata.Call{
-			ContactName:  record[headerIndexMapCall["Contact"]],
-			Date:         date,
-			ReadableDate: record[headerIndexMapCall["Date"]],
-			Presentation: record[headerIndexMapCall["Contact"]],
-			Duration:     record[headerIndexMapCall["Duration"]],
-			DataFrom:     str2Ptr("iMazing"),
-			ServiceType:  str2Ptr(svc),
-			Number:       record[headerIndexMapCall["Number"]],
-		}
-		if record[headerIndexMapCall["Call Type"]] == callTypeOutgoing {
-			call.Type = "2"
-		} else {
-			call.Type = "1"
-		}
-		callData.Call = append(callData.Call, call)
-	}
-
-	callData.Count = fmt.Sprintf("%d", len(callData.Call))
-	return &callData, CallHistoryFile, nil
-}
-
-func (a *Application) transformMessageData(csvIn *csv.Reader) (any, FileType, error) {
-	messageData := &sbrdata.Messages{
-		Sms: make([]sbrdata.SMS, 0),
-		Mms: make([]sbrdata.MMS, 0),
-	}
-
-	for {
-		record, err := csvIn.Read()
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			return nil, CallHistoryFile, err
-		}
-		sms := sbrdata.SMS{}
-		if record[headerIndexMapMessages["Type"]] == callTypeOutgoing {
-			sms.Type = "2"
-		} else {
-			sms.Type = "1"
-		}
-		sms.ContactName = record[headerIndexMapMessages["Sender Name"]]
-		if sms.ContactName == "" {
-			sms.ContactName = record[headerIndexMapMessages["Chat Session"]]
-		}
-		date := ""
-		dt, err := time.Parse("2006-01-02 15:04:05", record[headerIndexMapMessages["Message Date"]])
-		if err != nil {
-			return nil, CallHistoryFile, err
-		}
-		date = fmt.Sprintf("%d", dt.UnixMilli())
-		sms.Subject = record[headerIndexMapMessages["Subject"]]
-		sms.Body = record[headerIndexMapMessages["Text"]]
-		sms.ReadableDate = record[headerIndexMapMessages["Message Date"]]
-		sms.Date = date
-		sms.Address = record[headerIndexMapMessages["Sender ID"]]
-		sms.Status = record[headerIndexMapMessages["Status"]]
-		messageData.Sms = append(messageData.Sms, sms)
-	}
-
-	return messageData, MessageHistoryFile, nil
 }
 
 // str2Ptr converts a string to a pointer
