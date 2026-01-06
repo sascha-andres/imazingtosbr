@@ -4,7 +4,7 @@ go 1.25.4
 
 require (
 	github.com/google/go-cmp v0.6.0
-	github.com/sascha-andres/reuse v0.11.1
+	github.com/sascha-andres/reuse v0.12.0
 	github.com/sascha-andres/sbrdata/v2 v2.1.2
 	golang.org/x/tools v0.40.0
 )
